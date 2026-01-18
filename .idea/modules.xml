@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Solvr.iml" filepath="$PROJECT_DIR$/.idea/Solvr.iml" />
-      <module fileurl="file://$PROJECT_DIR$/engine.iml" filepath="$PROJECT_DIR$/engine.iml" />
     </modules>
   </component>
 </project>
