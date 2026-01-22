@@ -1,11 +1,12 @@
 package org.solvr.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.solvr.dto.AIHintsResponse;
 import org.solvr.dto.AISolutionResponse;
 
 public interface AISolutionService {
 
-    AIHintsResponse getHintsForProblem(final String problemStatement);
+    AIHintsResponse getHintsForProblem() throws JsonProcessingException;
 
-    AISolutionResponse getSolutionForProblem(final String problemStatement, final String language);
+    AISolutionResponse getSolutionForProblem(final String language) throws JsonProcessingException;
 }
