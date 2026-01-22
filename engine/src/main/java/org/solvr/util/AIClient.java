@@ -13,8 +13,8 @@ public class AIClient {
     public <T>T call(Class<T> responseWrapper) throws JsonProcessingException {
         final ObjectMapper mapper = new ObjectMapper();
         if (responseWrapper == AIHintsResponse.class) {
-            return mapper.readValue(Constants.DUMMY_HINTS, responseWrapper);
+            return mapper.readValue(PromptConstants.DUMMY_HINTS, responseWrapper);
         }
-        return mapper.readValue(Constants.DUMMY_SOLUTION, responseWrapper);
+        return mapper.readValue(PromptConstants.DUMMY_SOLUTION, responseWrapper);
     }
 }

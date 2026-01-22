@@ -12,21 +12,26 @@ import org.solvr.service.ResponseBuilderService;
 public class ResponseBuilderServiceImpl implements ResponseBuilderService {
 
     private static final ObjectMapper mapper = new ObjectMapper();
+    private static final int MAX_PROBLEM_CHARS = 4000;
 
     @Override
     public String getSolutionResponse(final RequestDto request) throws JsonProcessingException {
-        final AISolutionService aiSolutionService = new AISolutionServiceImpl(request.getProblemStatement());
+        final String sanitizedInput = sanitizeProblemStatement(request.getProblemStatement());
+        if (sanitizedInput.isBlank()) {
+            throw new IllegalArgumentException("Problem statement cannot be empty");
+        }
+        final AISolutionService aiSolutionService = new AISolutionServiceImpl(sanitizedInput);
         if(request.getShowHints()) {
             final AIHintsResponse hintsResponse = aiSolutionService.getHintsForProblem();
             final ResponseDto responseDto = ResponseDto.builder()
                     .hints(hintsResponse.getHints())
-                    .problemStatement(request.getProblemStatement())
+                    .problemStatement(sanitizedInput)
                     .build();
             return mapper.writeValueAsString(responseDto);
         } else {
             final AISolutionResponse solutionResponse = aiSolutionService.getSolutionForProblem(request.getLanguage());
             final ResponseDto responseDto = ResponseDto.builder()
-                    .problemStatement(request.getProblemStatement())
+                    .problemStatement(sanitizedInput)
                     .algorithms(solutionResponse.getAlgorithms())
                     .code(solutionResponse.getCode())
                     .intuition(solutionResponse.getIntuition())
@@ -35,5 +40,16 @@ public class ResponseBuilderServiceImpl implements ResponseBuilderService {
                     .build();
             return mapper.writeValueAsString(responseDto);
         }
+    }
+
+    private String sanitizeProblemStatement(final String input) {
+        if (input == null || input.isBlank()) {
+            throw new IllegalArgumentException("Problem statement cannot be empty");
+        }
+        if (input.length() > MAX_PROBLEM_CHARS) {
+            throw new IllegalArgumentException("Problem statement too long");
+        }
+        String cleaned = input.replaceAll("\\p{Cntrl}&&[^\n" + "\t]", "");
+        return cleaned.trim().replaceAll("\\s{3,}", "\n\n");
     }
 }
