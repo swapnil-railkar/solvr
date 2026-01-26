@@ -1,6 +1,5 @@
 package org.solvr.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.solvr.dto.AIHintsResponse;
 import org.solvr.dto.AISolutionResponse;
 import org.solvr.service.AISolutionService;
@@ -18,14 +17,14 @@ public class AISolutionServiceImpl implements AISolutionService {
     }
 
     @Override
-    public AIHintsResponse getHintsForProblem() throws JsonProcessingException {
+    public AIHintsResponse getHintsForProblem() throws Exception {
         promptBuilder.append(PromptConstants.GET_HINT_PROMPT);
         final AIClient client = new AIClient(promptBuilder.toString());
         return client.call(AIHintsResponse.class);
     }
 
     @Override
-    public AISolutionResponse getSolutionForProblem(final String language) throws JsonProcessingException {
+    public AISolutionResponse getSolutionForProblem(final String language) throws Exception {
         final String getSolutionPrompt = String.format(PromptConstants.GET_SOLUTION_PROMPT, language);
         promptBuilder.append(getSolutionPrompt);
         final AIClient client = new AIClient(promptBuilder.toString());

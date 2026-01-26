@@ -1,6 +1,5 @@
 package org.solvr.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.solvr.dto.AIHintsResponse;
 import org.solvr.dto.AISolutionResponse;
@@ -15,30 +14,41 @@ public class ResponseBuilderServiceImpl implements ResponseBuilderService {
     private static final int MAX_PROBLEM_CHARS = 4000;
 
     @Override
-    public String getSolutionResponse(final RequestDto request) throws JsonProcessingException {
+    public String getSolutionResponse(final RequestDto request) {
         final String sanitizedInput = sanitizeProblemStatement(request.getProblemStatement());
         if (sanitizedInput.isBlank()) {
             throw new IllegalArgumentException("Problem statement cannot be empty");
         }
         final AISolutionService aiSolutionService = new AISolutionServiceImpl(sanitizedInput);
-        if(request.getShowHints()) {
-            final AIHintsResponse hintsResponse = aiSolutionService.getHintsForProblem();
-            final ResponseDto responseDto = ResponseDto.builder()
-                    .hints(hintsResponse.getHints())
-                    .problemStatement(sanitizedInput)
-                    .build();
-            return mapper.writeValueAsString(responseDto);
+        if (request.getShowHints()) {
+            try {
+                final AIHintsResponse hintsResponse = aiSolutionService.getHintsForProblem();
+                final ResponseDto responseDto = ResponseDto.builder()
+                        .hints(hintsResponse.getHints())
+                        .problemStatement(sanitizedInput)
+                        .build();
+                return mapper.writeValueAsString(responseDto);
+            } catch (Exception e) {
+                //TODO : create error response object
+                return null;
+            }
+
         } else {
-            final AISolutionResponse solutionResponse = aiSolutionService.getSolutionForProblem(request.getLanguage());
-            final ResponseDto responseDto = ResponseDto.builder()
-                    .problemStatement(sanitizedInput)
-                    .algorithms(solutionResponse.getAlgorithms())
-                    .code(solutionResponse.getCode())
-                    .intuition(solutionResponse.getIntuition())
-                    .timeComplexity(solutionResponse.getTimeComplexity())
-                    .dataStructures(solutionResponse.getDataStructures())
-                    .build();
-            return mapper.writeValueAsString(responseDto);
+            try {
+                final AISolutionResponse solutionResponse = aiSolutionService.getSolutionForProblem(request.getLanguage());
+                final ResponseDto responseDto = ResponseDto.builder()
+                        .problemStatement(sanitizedInput)
+                        .algorithms(solutionResponse.getAlgorithms())
+                        .code(solutionResponse.getCode())
+                        .intuition(solutionResponse.getIntuition())
+                        .timeComplexity(solutionResponse.getTimeComplexity())
+                        .dataStructures(solutionResponse.getDataStructures())
+                        .build();
+                return mapper.writeValueAsString(responseDto);
+            } catch (Exception e) {
+                //TODO : create error response object
+                return null;
+            }
         }
     }
 

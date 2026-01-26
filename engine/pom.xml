@@ -40,6 +40,28 @@
             <version>1.18.42</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- Source: https://mvnrepository.com/artifact/com.openai/openai-java -->
+        <dependency>
+            <groupId>com.openai</groupId>
+            <artifactId>openai-java</artifactId>
+            <version>4.16.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- AWS SDK v2: Secrets Manager -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>secretsmanager</artifactId>
+            <version>2.25.40</version>
+        </dependency>
+
+        <!-- AWS SDK v2: Regions -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>regions</artifactId>
+            <version>2.25.40</version>
+        </dependency>
     </dependencies>
 
     <build>
