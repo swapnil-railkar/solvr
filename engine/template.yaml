@@ -2,6 +2,18 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
 Resources:
+
+  # 🔹 Lambda Layer for Java dependencies
+  SolvrJavaDepsLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: solvr-java-deps
+      Description: Shared Java dependencies (OpenAI, AWS SDK, Jackson, etc.)
+      ContentUri: layer/
+      CompatibleRuntimes:
+        - java17
+
+  # 🔹 Main Lambda Function
   SolutionFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -9,10 +21,20 @@ Resources:
       Handler: org.solvr.SolutionHandler::handleRequest
       CodeUri: .
       MemorySize: 512
-      Timeout: 15
+      Timeout: 60
+      Layers:
+        - !Ref SolvrJavaDepsLayer
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - secretsmanager:GetSecretValue
+              Resource:
+                - arn:aws:secretsmanager:ap-south-1:*:secret:solvr-openai-key*
       Events:
         SolveApi:
           Type: Api
           Properties:
             Path: /solve
             Method: post
+

@@ -10,7 +10,6 @@ import org.solvr.dto.RequestDto;
 import org.solvr.service.ResponseBuilderService;
 import org.solvr.service.impl.ResponseBuilderServiceImpl;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class SolutionHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
@@ -25,6 +24,7 @@ public class SolutionHandler implements RequestHandler<APIGatewayProxyRequestEve
 
             return new APIGatewayProxyResponseEvent()
                     .withStatusCode(200)
+                    .withHeaders(Map.of("Content-Type", "application/json"))
                     .withBody(responseJSON);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

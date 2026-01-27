@@ -19,14 +19,18 @@ public class AIClient {
     public <T> T call(Class<T> responseWrapper) throws Exception {
         final ObjectMapper mapper = new ObjectMapper();
         final String apiKey = OpenAIKeyProvider.getApiKey();
+        System.out.println("Creating openai client");
         final OpenAIClient client = OpenAIOkHttpClient.builder().apiKey(apiKey).build();
+        System.out.println("Fetching response....");
         final ResponseCreateParams params = ResponseCreateParams.builder()
                 .input(prompt)
                 .model("gpt-5-nano")
                 .build();
 
         final Response response = client.responses().create(params);
+        System.out.println("Completed fetching response....");
         final String outputJSON = extractText(response);
+        System.out.println("Extracted output JSON : " + outputJSON);
         return mapper.readValue(outputJSON, responseWrapper);
     }
 

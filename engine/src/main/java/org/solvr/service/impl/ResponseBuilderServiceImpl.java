@@ -19,6 +19,7 @@ public class ResponseBuilderServiceImpl implements ResponseBuilderService {
         if (sanitizedInput.isBlank()) {
             throw new IllegalArgumentException("Problem statement cannot be empty");
         }
+        System.out.println("Sanitized input : " + sanitizedInput);
         final AISolutionService aiSolutionService = new AISolutionServiceImpl(sanitizedInput);
         if (request.getShowHints()) {
             try {
@@ -30,6 +31,7 @@ public class ResponseBuilderServiceImpl implements ResponseBuilderService {
                 return mapper.writeValueAsString(responseDto);
             } catch (Exception e) {
                 //TODO : create error response object
+                System.out.println("Error occurred : " + e.getMessage());
                 return null;
             }
 
@@ -47,6 +49,7 @@ public class ResponseBuilderServiceImpl implements ResponseBuilderService {
                 return mapper.writeValueAsString(responseDto);
             } catch (Exception e) {
                 //TODO : create error response object
+                System.out.println("Error occurred : " + e.getMessage());
                 return null;
             }
         }
