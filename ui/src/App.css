@@ -25,5 +25,78 @@ h1 {
 }
 
 .app-blue {
-    color: #0cc0df;
+  color: #0cc0df;
+}
+
+.app-button {
+  width: max-content;
+  padding: 10px 16px;
+  margin: 10px;
+
+  background-color: #0cc0df;
+  color: white;
+
+  border: 2px solid #334155;
+  border-radius: 10px;
+
+  cursor: pointer;        
+}
+
+.app-button:hover {
+  background-color: #22d3ee;
+}
+
+
+.input-form {
+  display: grid;
+  column-gap: 20px;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 0.5fr;
+  height: 35rem;
+  width: 80%;
+  padding-left: 30px;
+}
+
+.problem-info {
+  border-radius: 5px;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+}
+
+.config-selector {
+  background-color: #334155;
+  width: 100%;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+}
+
+.config-selector option {
+  background-color: #020617; 
+  color: white;
+}
+
+textarea {
+  background-color: #020617;
+  border: 2px solid #334155;
+  color: white;
+}
+
+.config-label {
+  margin-bottom: 8px;
+  color: white;
+}
+
+.hint-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  padding: 10px;
+}
+
+.hint-toggle input {
+  accent-color: #38bdf8;
 }
