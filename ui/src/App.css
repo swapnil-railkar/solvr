@@ -1,0 +1,29 @@
+body {
+  margin-top: 0%;
+  margin-bottom: 0%;
+  background-color: #0f172a;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 10px;
+}
+
+h1 {
+  margin: 10px;
+}
+
+.app-font {
+  font-family: "Poppins", sans-serif;
+}
+
+.app-bg {
+  background-color: #0f172a;
+}
+
+.app-blue {
+    color: #0cc0df;
+}
