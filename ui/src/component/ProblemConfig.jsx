@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { LANGUAGES } from "../store/language-list";
 import { problemActions } from "../store/problem";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 export default function ProblemConfig() {
   const dispatch = useDispatch();
@@ -11,27 +13,29 @@ export default function ProblemConfig() {
   function handleSubmission(event) {
     event.preventDefault();
     const errors = [];
-    if(problemStatement.trim() === '') {
-      errors.push('Problem statement cannot be empty');
+    if (problemStatement.trim() === "") {
+      errors.push("Problem statement cannot be empty");
     }
 
-    if(language === '') {
-      errors.push('Select a language');
+    if (language === "") {
+      errors.push("Select a language");
     }
 
-    if(errors.length > 0) {
+    if (errors.length > 0) {
       alert(errors[0]);
       return;
     }
-    
-    alert('Submitted');
+
+    alert("Submitted");
   }
 
   return (
     <form onSubmit={handleSubmission} className="input-form">
       <textarea
         value={problemStatement}
-        onChange = {(e) => dispatch(problemActions.updateProblemStatement(e.target.value))}
+        onChange={(e) =>
+          dispatch(problemActions.updateProblemStatement(e.target.value))
+        }
         className="problem-info app-font"
         placeholder="Copy / Type Problem statement"
       />
@@ -64,7 +68,14 @@ export default function ProblemConfig() {
           Show hints only
         </label>
 
-        <button className="app-button app-font" type="submit">Generate Solution</button>
+        <motion.button
+          className="app-button app-font"
+          type="submit"
+          whileHover={{ scale: 1.04 }}
+          transition={{ type: "spring", stiffstiffness: 500 }}
+        >
+          Generate Solution
+        </motion.button>
       </div>
     </form>
   );
