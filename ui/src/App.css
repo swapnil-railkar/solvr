@@ -71,6 +71,7 @@ h1 {
   padding: 10px;
   border-radius: 5px;
   color: white;
+  overflow-y: auto;
 }
 
 .config-selector option {
@@ -78,10 +79,33 @@ h1 {
   color: white;
 }
 
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #0cc0df #0f172a;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #0f172a;
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #0cc0df;
+  border-radius: 8px;
+}
+
 textarea {
   background-color: #020617;
   border: 2px solid #334155;
   color: white;
+}
+
+textarea[aria-invalid="true"] {
+  border-color: #ef4444;
 }
 
 .config-label {

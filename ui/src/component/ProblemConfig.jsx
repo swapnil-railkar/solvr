@@ -1,11 +1,17 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LANGUAGES } from "../store/language-list";
 import { problemActions } from "../store/problem";
 // eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
+import { motion, useAnimate } from "framer-motion";
 
 export default function ProblemConfig() {
   const dispatch = useDispatch();
+  const [scope, animate] = useAnimate();
+  const [fieldErrors, setFieldErrors] = useState({
+    problemStatement: false,
+    language: false,
+  });
   const { problemStatement, language, showHints } = useSelector(
     (state) => state.problem,
   );
@@ -13,37 +19,67 @@ export default function ProblemConfig() {
   function handleSubmission(event) {
     event.preventDefault();
     const errors = [];
+    const nextErrors = {
+      problemStatement: false,
+      language: false,
+    };
     if (problemStatement.trim() === "") {
       errors.push("Problem statement cannot be empty");
+      nextErrors.problemStatement = true;
     }
 
     if (language === "") {
       errors.push("Select a language");
+      nextErrors.language = true;
     }
 
     if (errors.length > 0) {
-      alert(errors[0]);
+      setFieldErrors(nextErrors);
+      if (nextErrors.problemStatement) {
+        const textarea = scope.current?.querySelector("#problem-info");
+        if (textarea) {
+          animate(
+            textarea,
+            { x: [0, -8, 8, -5, 5, 0] },
+            { duration: 0.45, ease: "easeInOut" },
+          );
+        }
+      }
+      if (nextErrors.language) {
+        const selector = scope.current?.querySelector("#language-selector");
+        if (selector) {
+          animate(
+            selector,
+            { x: [0, -8, 8, -5, 5, 0] },
+            { duration: 0.45, ease: "easeInOut" },
+          );
+        }
+      }
       return;
     }
 
-    alert("Submitted");
+    setFieldErrors({ problemStatement: false, language: false });
   }
 
   return (
-    <form onSubmit={handleSubmission} className="input-form">
+    <form onSubmit={handleSubmission} className="input-form" ref={scope}>
       <textarea
         value={problemStatement}
         onChange={(e) =>
           dispatch(problemActions.updateProblemStatement(e.target.value))
         }
-        className="problem-info app-font"
+        className="problem-info app-font custom-scrollbar"
+        id="problem-info"
         placeholder="Copy / Type Problem statement"
+        aria-invalid={fieldErrors.problemStatement}
       />
       <div className="problem-info">
         <select
           value={language}
-          className="config-selector app-font"
+          className="config-selector custom-scrollbar app-font"
+          id="language-selector"
           onChange={(e) => dispatch(problemActions.updateLanguage(e.target.value))}
+          aria-invalid={fieldErrors.language}
         >
           <option value="" disabled>
             Select language
