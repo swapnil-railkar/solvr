@@ -62,6 +62,7 @@ h1 {
   padding: 10px;
   height: 100%;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .config-selector {
@@ -102,6 +103,8 @@ textarea {
   background-color: #020617;
   border: 2px solid #334155;
   color: white;
+  box-sizing: border-box;
+  height: 100%;
 }
 
 textarea[aria-invalid="true"] {
@@ -123,4 +126,30 @@ textarea[aria-invalid="true"] {
 
 .hint-toggle input {
   accent-color: #38bdf8;
+}
+
+.app-section {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  justify-content: center;
+}
+
+textarea {
+  margin-left: 10px;
+  width: 80%;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.app-section > *{
+  color: white;
+}
+
+ul {
+  margin: 0px;
+}
+
+section {
+  margin: 10px;
 }

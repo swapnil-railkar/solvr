@@ -110,7 +110,7 @@ export default function ProblemConfig() {
           whileHover={{ scale: 1.04 }}
           transition={{ type: "spring", stiffstiffness: 500 }}
         >
-          Generate Solution
+          {`Generate ${showHints ? 'Hints' : 'Solution'}`}
         </motion.button>
       </div>
     </form>
