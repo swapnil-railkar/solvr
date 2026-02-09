@@ -1,26 +1,21 @@
-import './App.css'
-import Header from './component/Header'
-import Hints from './component/Hints'
-import ProblemConfig from './component/ProblemConfig'
+import "./App.css";
+import GreetingPage from "./component/GreetingPage";
+import Header from "./component/Header";
+import Hints from "./component/Hints";
+import ProblemConfig from "./component/ProblemConfig";
 // eslint-disable-next-line no-unused-vars
-import { motion } from 'framer-motion'
+import { motion } from "framer-motion";
 
 const DUMMY_SOLUTION = {
-  hints: [
-    "Test hint 1",
-    "Test hint 2",
-    "Test hint 3",
-    "Test hint 4"
-  ]
-}
+  hints: ["Test hint 1", "Test hint 2", "Test hint 3", "Test hint 4"],
+};
 function App() {
-  
   return (
     <>
-      <Header/>
+      <GreetingPage />
       <ProblemConfig />
-      <section className='app-section'>
-        <h2 className='app-font'>Hints</h2>
+      <section className="app-section">
+        <h2 className="app-font">Hints</h2>
         <Hints hints={DUMMY_SOLUTION.hints} />
         <motion.button
           className="app-button app-font"
@@ -32,7 +27,7 @@ function App() {
         </motion.button>
       </section>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,7 +1,26 @@
+html,
 body {
-  margin-top: 0%;
-  margin-bottom: 0%;
+  margin: 0;
   background-color: #0f172a;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #0cc0df #0f172a;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: #0cc0df;
+  border-radius: 8px;
 }
 
 header {
@@ -10,6 +29,19 @@ header {
   justify-content: space-between;
   align-items: center;
   padding-right: 10px;
+}
+
+.app-header {
+  position: relative;
+}
+
+.app-header-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 20;
 }
 
 h1 {
@@ -107,10 +139,6 @@ textarea {
   height: 100%;
 }
 
-textarea[aria-invalid="true"] {
-  border-color: #ef4444;
-}
-
 .config-label {
   margin-bottom: 8px;
   color: white;
@@ -133,6 +161,48 @@ textarea[aria-invalid="true"] {
   flex-direction: column;
   align-content: flex-start;
   justify-content: center;
+}
+
+.greeting-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.greeting-text {
+  font-size: 3rem;
+}
+
+.greeting-subtitle {
+  text-align: center;
+  margin-top: 6px;
+}
+
+.greeting-typewriter {
+  font-family: "IBM Plex Mono", "Fira Mono", "Courier New", monospace;
+  letter-spacing: 0.3px;
+  min-height: 1.2em;
+}
+
+.greeting-typewriter .typewriter-text {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 0;
+  /* Step-based reveal for a typewriter effect. */
+  animation: typewriter-reveal 2.4s steps(36, end) forwards;
+}
+
+@keyframes typewriter-reveal {
+  from {
+    max-width: 0;
+  }
+  to {
+    /* Match or exceed the subtitle length to fully reveal the text. */
+    max-width: 40ch;
+  }
 }
 
 textarea {

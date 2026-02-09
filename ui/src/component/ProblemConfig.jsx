@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LANGUAGES } from "../store/language-list";
 import { problemActions } from "../store/problem";
 // eslint-disable-next-line no-unused-vars
-import { motion, useAnimate } from "framer-motion";
+import { AnimatePresence, motion, useAnimate } from "framer-motion";
 
 export default function ProblemConfig() {
   const dispatch = useDispatch();
@@ -110,7 +110,17 @@ export default function ProblemConfig() {
           whileHover={{ scale: 1.04 }}
           transition={{ type: "spring", stiffstiffness: 500 }}
         >
-          {`Generate ${showHints ? 'Hints' : 'Solution'}`}
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={showHints ? "hints" : "solution"}
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 6 }}
+              transition={{ duration: 0.2 }}
+            >
+              {`Generate ${showHints ? "Hints" : "Solution"}`}
+            </motion.span>
+          </AnimatePresence>
         </motion.button>
       </div>
     </form>

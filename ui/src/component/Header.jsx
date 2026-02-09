@@ -1,6 +1,6 @@
 export default function Header() {
   return (
-    <header className="app-bg">
+    <header className="app-bg app-header">
       <h1 className="app-font app-blue">SolvR</h1>
       <a
         href="https://github.com/swapnil-railkar/solvr"
