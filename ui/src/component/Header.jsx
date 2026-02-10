@@ -6,8 +6,12 @@ export default function Header() {
         href="https://github.com/swapnil-railkar/solvr"
         target="_blank"
         rel="noopener noreferrer"
-        title="View FormatWizard on GitHub"
+        aria-label="Visit codebase"
+        className="app-font codebase-link"
       >
+        <span className="codebase-tooltip" aria-hidden="true">
+          Visit codebase
+        </span>
         <img
           src="/app-logo-fox.png"
           height="20"

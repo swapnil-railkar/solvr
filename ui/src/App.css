@@ -35,6 +35,87 @@ header {
   position: relative;
 }
 
+.codebase-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.codebase-tooltip {
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%) translateX(4px);
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid #38bdf8;
+  background: #0f172a;
+  color: #0cc0df;
+  font-size: 0.75rem;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  box-shadow: 0 8px 18px rgba(2, 6, 23, 0.45);
+  opacity: 0;
+  pointer-events: auto;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.codebase-tooltip::before {
+  content: "";
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent transparent #0f172a;
+  opacity: 0;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.codebase-link:hover .codebase-tooltip,
+.codebase-link:focus-visible .codebase-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.codebase-link:hover .codebase-tooltip::before,
+.codebase-link:focus-visible .codebase-tooltip::before {
+  opacity: 1;
+  transform: translateY(-50%);
+}
+
+@media (max-width: 600px) {
+  .codebase-tooltip {
+    right: auto;
+    left: 50%;
+    top: calc(100% + 10px);
+    transform: translateX(-50%) translateY(-4px);
+  }
+
+  .codebase-tooltip::before {
+    right: auto;
+    left: 50%;
+    top: calc(100% + 2px);
+    transform: translateX(-50%) translateY(-4px);
+    border-color: #0f172a transparent transparent transparent;
+  }
+
+  .codebase-link:hover .codebase-tooltip,
+  .codebase-link:focus-visible .codebase-tooltip {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .codebase-link:hover .codebase-tooltip::before,
+  .codebase-link:focus-visible .codebase-tooltip::before {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 .app-header-layer {
   position: fixed;
   top: 0;
@@ -60,6 +141,10 @@ h1 {
   color: #0cc0df;
 }
 
+.app-white {
+  color: white;
+}
+
 .app-button {
   width: max-content;
   padding: 10px 16px;
@@ -71,13 +156,12 @@ h1 {
   border: 2px solid #334155;
   border-radius: 10px;
 
-  cursor: pointer;        
+  cursor: pointer;
 }
 
 .app-button:hover {
   background-color: #22d3ee;
 }
-
 
 .input-form {
   display: grid;
@@ -108,7 +192,7 @@ h1 {
 }
 
 .config-selector option {
-  background-color: #020617; 
+  background-color: #020617;
   color: white;
 }
 
@@ -154,6 +238,27 @@ textarea {
 
 .hint-toggle input {
   accent-color: #38bdf8;
+}
+
+.hints-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 10px;
+}
+
+.hints-section > h2,
+.hints-section > .app-button {
+  align-self: center;
+}
+
+.hints-section ul {
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 .app-section {
@@ -207,13 +312,41 @@ textarea {
 
 textarea {
   margin-left: 10px;
-  width: 80%;
+  width: 100%;
   padding: 10px;
   border-radius: 10px;
 }
 
-.app-section > *{
+.app-section > * {
   color: white;
+}
+
+.hint-card {
+  background: #0b1222;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 10px 0;
+  box-shadow: 0 10px 20px rgba(2, 6, 23, 0.35);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.hint-card:hover {
+  transform: translateY(-3px);
+  border-color: #38bdf8;
+  box-shadow:
+    0 14px 26px rgba(2, 6, 23, 0.55),
+    0 0 0 1px rgba(56, 189, 248, 0.2);
+}
+
+.hint-textarea {
+  transition: height 0.2s ease;
 }
 
 ul {
