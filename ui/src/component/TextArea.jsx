@@ -18,7 +18,7 @@ export default function TextArea({ text, expanded = false }) {
   return (
     <textarea
       id="app-textarea"
-      className="app-font custom-scrollbar hint-textarea"
+      className="app-font custom-scrollbar hint-textarea full-width"
       value={text}
       disabled
       ref={textareaRef}
