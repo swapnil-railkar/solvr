@@ -49,7 +49,7 @@ export default function GreetingPage() {
           </Motion.div>
         )}
       </AnimatePresence>
-      <Motion.section className="app-section">
+      <Motion.section className="greeting-section">
         <div className="greeting-row">
           <Motion.h1
             className="app-font greeting-text"

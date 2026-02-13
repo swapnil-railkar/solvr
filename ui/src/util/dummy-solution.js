@@ -1,0 +1,15 @@
+export const DUMMY_OUTPUT = {
+  "statusCode": 200,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": "{\"problemStatement\":\"Given an array of distinct integers arr, find all pairs of elements with the minimum absolute difference of any two elements. Return a list of pairs in ascending order (with respect to pairs), each pair [a, b] follows: a, b are from arr; a < b; and b - a equals to the minimum absolute difference of any two elements in arr.\",\"hints\":null,\"intuition\":\"Sorting arr places the numbers in increasing order. The minimum absolute difference between any two elements must occur between two consecutive elements in this sorted sequence, since any non-adjacent pair spans at least the sum of gaps and cannot be smaller than the smallest gap. So compute the minimum of arr[i+1]-arr[i], then collect every adjacent pair with that difference. Using the sorted order ensures a < b and the resulting pairs are in ascending order of the pairs.\",\"code\":\"import java.util.*;\\n\\npublic class Solution {\\n    public List<List<Integer>> minimumAbsDifference(int[] arr) {\\n        List<List<Integer>> res = new ArrayList<>();\\n        if (arr == null || arr.length < 2) return res;\\n        Arrays.sort(arr);\\n        int minDiff = Integer.MAX_VALUE;\\n        for (int i = 0; i < arr.length - 1; i++) {\\n            int diff = arr[i+1] - arr[i];\\n            if (diff < minDiff) minDiff = diff;\\n        }\\n        for (int i = 0; i < arr.length - 1; i++) {\\n            if (arr[i+1] - arr[i] == minDiff) {\\n                res.add(Arrays.asList(arr[i], arr[i+1]));\\n            }\\n        }\\n        return res;\\n    }\\n}\",\"timeComplexity\":\"O(n log n)\",\"dataStructures\":\"array, ArrayList, List\",\"algorithms\":\"sorting, min-diff computation, collection\"}"
+};
+
+export const DUMMY_HINTS = {
+  "statusCode": 200,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": "{\"problemStatement\":\"Given an array of distinct integers arr, find all pairs of elements with the minimum absolute difference of any two elements. Return a list of pairs in ascending order (with respect to pairs), each pair [a, b] follows: a, b are from arr; a < b; and b - a equals to the minimum absolute difference of any two elements in arr.\",\"hints\":[\"Sort the array; order helps compare nearby numbers easily.\",\"In a sorted array, the smallest differences occur between neighbors, so examine consecutive pairs to find the minimum.\",\"After you know the minimum difference, collect all consecutive pairs whose difference equals that minimum.\",\"Return those pairs as [a, b] with a < b, and order them lexicographically (e.g., by a then b).\"],\"intuition\":null,\"code\":null,\"timeComplexity\":null,\"dataStructures\":null,\"algorithms\":null}"
+}

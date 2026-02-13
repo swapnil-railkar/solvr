@@ -1,31 +1,92 @@
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import GreetingPage from "./component/GreetingPage";
-import Header from "./component/Header";
 import Hints from "./component/Hints";
 import ProblemConfig from "./component/ProblemConfig";
-// eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
+import LoadingScreen from "./component/LoadingScreen";
+import { SOLUTION_STATE } from "./util/state-constants";
+import Solution from "./component/Solution";
+import { useDispatch, useSelector } from "react-redux";
+import { getResults } from "./util/http";
+import { solutionActions } from "./store/solution";
 
-const DUMMY_SOLUTION = {
-  hints: ["Test hint 1", "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).", "Test hint 3", "Test hint 4"],
-};
 function App() {
+  const [solutionState, updateSolutionState] = useState();
+  const answerSectionRef = useRef(null);
+  const { problemStatement, language } = useSelector((state) => state.problem);
+  const [showHints, updateShowHints] = useState(false);
+
+  const [loading, updateLoading] = useState(false);
+  const [data, updateData] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    async function callHttp() {
+      try {
+        updateLoading(true);
+        const request = {
+          problemStatement,
+          language,
+          showHints: solutionState === SOLUTION_STATE.SHOW_HINTS,
+        };
+        const result = await getResults(request);
+        const parsedResult = JSON.parse(result.body);
+        updateData(true);
+        updateLoading(false);
+        updateShowHints(solutionState === SOLUTION_STATE.SHOW_HINTS);
+
+        if (solutionState === SOLUTION_STATE.SHOW_SOLUTION) {
+          dispatch(
+            solutionActions.updateSolution({
+              intuition: parsedResult.intuition,
+              code: parsedResult.code,
+              timeComplexity: parsedResult.timeComplexity,
+              dataStructures: parsedResult.dataStructures,
+              algorithms: parsedResult.algorithms,
+            }),
+          );
+        } else if (solutionState === SOLUTION_STATE.SHOW_HINTS) {
+          dispatch(solutionActions.updateHints(parsedResult.hints));
+        }
+      } catch (error) {
+        console.error(error);
+        updateLoading(false);
+      }
+    }
+
+    if (solutionState) {
+      callHttp();
+      updateSolutionState(undefined);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [solutionState]);
+
+  useEffect(() => {
+    if (!loading && data && answerSectionRef.current) {
+      answerSectionRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [loading, data, showHints]);
+
+  function handleGetSolutionClick(solutionState) {
+    updateSolutionState(solutionState);
+  }
+
   return (
     <>
       <GreetingPage />
-      <ProblemConfig />
-      <section className="hints-section">
-        <h2 className="app-font app-white">Hints</h2>
-        <Hints hints={DUMMY_SOLUTION.hints} />
-        <motion.button
-          className="app-button app-font"
-          type="submit"
-          whileHover={{ scale: 1.04 }}
-          transition={{ type: "spring", stiffstiffness: 500 }}
-        >
-          Get Solution
-        </motion.button>
-      </section>
+      <ProblemConfig handleTrigger={handleGetSolutionClick} />
+      {!loading && data && (
+        <section ref={answerSectionRef} className="app-section">
+          {showHints && (
+            <Hints handleGetSolutionClick={handleGetSolutionClick} />
+          )}
+          {!showHints && <Solution />}
+        </section>
+      )}
+      {loading && <LoadingScreen />}
     </>
   );
 }

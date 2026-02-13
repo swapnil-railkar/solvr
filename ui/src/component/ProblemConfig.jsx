@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { LANGUAGES } from "../store/language-list";
+import { LANGUAGES } from "../util/language-list";
 import { problemActions } from "../store/problem";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion, useAnimate } from "framer-motion";
+import { SOLUTION_STATE } from "../util/state-constants";
 
-export default function ProblemConfig() {
+export default function ProblemConfig({ handleTrigger }) {
   const dispatch = useDispatch();
   const [scope, animate] = useAnimate();
+  const [ showHints, updateShowHints] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({
     problemStatement: false,
     language: false,
   });
-  const { problemStatement, language, showHints } = useSelector(
+  const { problemStatement, language } = useSelector(
     (state) => state.problem,
   );
 
@@ -59,6 +61,7 @@ export default function ProblemConfig() {
     }
 
     setFieldErrors({ problemStatement: false, language: false });
+    handleTrigger(showHints ? SOLUTION_STATE.SHOW_HINTS : SOLUTION_STATE.SHOW_SOLUTION);
   }
 
   return (
@@ -98,7 +101,7 @@ export default function ProblemConfig() {
             type="checkbox"
             checked={showHints}
             onChange={(e) =>
-              dispatch(problemActions.updateShowHints(e.target.checked))
+              updateShowHints(e.target.checked)
             }
           />
           Show hints only
