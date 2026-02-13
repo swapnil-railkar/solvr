@@ -1,15 +1,15 @@
 html {
   margin: 0;
-  background-color: #0f172a;
+  background-color: #0a0a0a;
   overflow-x: hidden;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #0cc0df #0f172a;
+  scrollbar-color: #22c55e #0a0a0a;
 }
 
 body {
   margin: 0;
-  background-color: #0f172a;
+  background-color: #0a0a0a;
   overflow-x: hidden;
 }
 
@@ -18,11 +18,11 @@ html::-webkit-scrollbar {
 }
 
 html::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #0a0a0a;
 }
 
 html::-webkit-scrollbar-thumb {
-  background: #0cc0df;
+  background: #22c55e;
   border-radius: 8px;
 }
 
@@ -51,9 +51,9 @@ header {
   transform: translateY(-50%) translateX(4px);
   padding: 6px 10px;
   border-radius: 10px;
-  border: 1px solid #38bdf8;
-  background: #0f172a;
-  color: #0cc0df;
+  border: 1px solid #22c55e;
+  background: #0a0a0a;
+  color: #22c55e;
   font-size: 0.75rem;
   letter-spacing: 0.2px;
   white-space: nowrap;
@@ -73,7 +73,7 @@ header {
   transform: translateY(-50%);
   border-width: 6px;
   border-style: solid;
-  border-color: transparent transparent transparent #0f172a;
+  border-color: transparent transparent transparent #0a0a0a;
   opacity: 0;
   transition:
     opacity 0.2s ease,
@@ -105,7 +105,7 @@ header {
     left: 50%;
     top: calc(100% + 2px);
     transform: translateX(-50%) translateY(-4px);
-    border-color: #0f172a transparent transparent transparent;
+    border-color: #0a0a0a transparent transparent transparent;
   }
 
   .codebase-link:hover .codebase-tooltip,
@@ -137,11 +137,11 @@ h1 {
 }
 
 .app-bg {
-  background-color: #0f172a;
+  background-color: #0a0a0a;
 }
 
 .app-blue {
-  color: #0cc0df;
+  color: #22c55e;
 }
 
 .app-white {
@@ -153,17 +153,17 @@ h1 {
   padding: 10px 16px;
   margin: 10px;
 
-  background-color: #0cc0df;
+  background-color: #16a34a;
   color: white;
 
-  border: 2px solid #334155;
+  border: 2px solid #1f2d23;
   border-radius: 10px;
 
   cursor: pointer;
 }
 
 .app-button:hover {
-  background-color: #22d3ee;
+  background-color: #22c55e;
 }
 
 .input-form {
@@ -185,7 +185,7 @@ h1 {
 }
 
 .config-selector {
-  background-color: #334155;
+  background-color: #1f2d23;
   width: 100%;
   margin: 10px;
   padding: 10px;
@@ -195,13 +195,13 @@ h1 {
 }
 
 .config-selector option {
-  background-color: #020617;
+  background-color: #020502;
   color: white;
 }
 
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #0cc0df #0f172a;
+  scrollbar-color: #22c55e #0a0a0a;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -209,18 +209,18 @@ h1 {
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #0a0a0a;
   border-radius: 8px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #0cc0df;
+  background: #22c55e;
   border-radius: 8px;
 }
 
 textarea {
-  background-color: #020617;
-  border: 2px solid #334155;
+  background-color: #020502;
+  border: 2px solid #1f2d23;
   color: white;
   box-sizing: border-box;
   height: 100%;
@@ -243,7 +243,7 @@ textarea {
 }
 
 .hint-toggle input {
-  accent-color: #38bdf8;
+  accent-color: #22c55e;
 }
 
 .app-section {
@@ -251,7 +251,7 @@ textarea {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid #1e293b;
+  border: 1px solid #1f2d23;
   border-radius: 14px;
   padding: 10px;
   margin-top: 20px;
@@ -309,8 +309,8 @@ textarea {
 }
 
 .hint-card {
-  background: #0b1222;
-  border: 1px solid #1e293b;
+  background: #0b100c;
+  border: 1px solid #1f2d23;
   border-radius: 14px;
   padding: 12px 14px;
   margin: 10px 0;
@@ -326,10 +326,10 @@ textarea {
 
 .hint-card:hover {
   transform: translateY(-3px);
-  border-color: #38bdf8;
+  border-color: #22c55e;
   box-shadow:
     0 14px 26px rgba(2, 6, 23, 0.55),
-    0 0 0 1px rgba(56, 189, 248, 0.2);
+    0 0 0 1px rgba(34, 197, 94, 0.25);
 }
 
 .hint-textarea {
@@ -366,7 +366,7 @@ section {
 
 .highlight-div {
   width: 80%;
-  background-color: #0cc0df;
+  background-color: #22c55e;
   height: 2px;
   position: absolute;
   bottom: 0;
