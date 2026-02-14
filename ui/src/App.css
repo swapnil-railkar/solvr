@@ -429,3 +429,18 @@ li {
   justify-content: center;
   width: 100%;
 }
+
+.code-section {
+  border: 1px solid #1f2d23;
+  border-radius: 14px;
+  padding: 16px;
+
+  width: 80%;
+  height: 400px;        /* 👈 control height */
+
+  overflow: auto;           /* 👈 enables scroll */
+  background-color: #020617;
+
+  margin: 0;
+}
+

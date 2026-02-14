@@ -1,8 +1,12 @@
+import CodeBlock from "./CodeBlock";
 import TextArea from "./TextArea";
 
 export default function Code({ answer }) {
   return (
     <div className="code-screen">
+      <p className="app-font">Code</p>
+      <CodeBlock code={answer.code} />
+      
       <p className="app-font">Time Complexity</p>
       <TextArea text={answer.timeComplexity} />
 
