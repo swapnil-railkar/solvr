@@ -30,7 +30,7 @@ function App() {
           showHints: solutionState === SOLUTION_STATE.SHOW_HINTS,
         };
         const result = await getResults(request);
-        const parsedResult = JSON.parse(result.body);
+        console.log(result);
         updateData(true);
         updateLoading(false);
         updateShowHints(solutionState === SOLUTION_STATE.SHOW_HINTS);
@@ -38,15 +38,15 @@ function App() {
         if (solutionState === SOLUTION_STATE.SHOW_SOLUTION) {
           dispatch(
             solutionActions.updateSolution({
-              intuition: parsedResult.intuition,
-              code: parsedResult.code,
-              timeComplexity: parsedResult.timeComplexity,
-              dataStructures: parsedResult.dataStructures,
-              algorithms: parsedResult.algorithms,
+              intuition: result.intuition,
+              code: result.code,
+              timeComplexity: result.timeComplexity,
+              dataStructures: result.dataStructures,
+              algorithms: result.algorithms,
             }),
           );
         } else if (solutionState === SOLUTION_STATE.SHOW_HINTS) {
-          dispatch(solutionActions.updateHints(parsedResult.hints));
+          dispatch(solutionActions.updateHints(result.hints));
         }
       } catch (error) {
         console.error(error);
