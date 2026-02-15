@@ -4,9 +4,9 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.solvr.dto.RequestDto;
+import org.solvr.dto.ResponseDto;
 import org.solvr.service.ResponseBuilderService;
 import org.solvr.service.impl.ResponseBuilderServiceImpl;
 
@@ -20,14 +20,18 @@ public class SolutionHandler implements RequestHandler<APIGatewayProxyRequestEve
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent event, Context context) {
         try {
             final RequestDto body = mapper.readValue(event.getBody(), RequestDto.class);
-            final String responseJSON = responseBuilderService.getSolutionResponse(body);
-
+            final ResponseDto response = responseBuilderService.getSolutionResponse(body);
+            final String responseJSON = mapper.writeValueAsString(response);
+            System.out.println("response : " + responseJSON);
             return new APIGatewayProxyResponseEvent()
                     .withStatusCode(200)
                     .withHeaders(Map.of("Content-Type", "application/json"))
                     .withBody(responseJSON);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            return new APIGatewayProxyResponseEvent()
+                    .withStatusCode(500)
+                    .withHeaders(Map.of("Content-Type", "application/json"))
+                    .withBody(e.getMessage());
         }
     }
 }

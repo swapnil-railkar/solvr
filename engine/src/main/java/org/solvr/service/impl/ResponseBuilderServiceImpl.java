@@ -1,6 +1,5 @@
 package org.solvr.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.solvr.dto.AIHintsResponse;
 import org.solvr.dto.AISolutionResponse;
 import org.solvr.dto.RequestDto;
@@ -10,11 +9,10 @@ import org.solvr.service.ResponseBuilderService;
 
 public class ResponseBuilderServiceImpl implements ResponseBuilderService {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
     private static final int MAX_PROBLEM_CHARS = 4000;
 
     @Override
-    public String getSolutionResponse(final RequestDto request) {
+    public ResponseDto getSolutionResponse(final RequestDto request) {
         final String sanitizedInput = sanitizeProblemStatement(request.getProblemStatement());
         if (sanitizedInput.isBlank()) {
             throw new IllegalArgumentException("Problem statement cannot be empty");
@@ -24,11 +22,10 @@ public class ResponseBuilderServiceImpl implements ResponseBuilderService {
         if (request.getShowHints()) {
             try {
                 final AIHintsResponse hintsResponse = aiSolutionService.getHintsForProblem();
-                final ResponseDto responseDto = ResponseDto.builder()
+                return ResponseDto.builder()
                         .hints(hintsResponse.getHints())
                         .problemStatement(sanitizedInput)
                         .build();
-                return mapper.writeValueAsString(responseDto);
             } catch (Exception e) {
                 //TODO : create error response object
                 System.out.println("Error occurred : " + e.getMessage());
@@ -38,15 +35,16 @@ public class ResponseBuilderServiceImpl implements ResponseBuilderService {
         } else {
             try {
                 final AISolutionResponse solutionResponse = aiSolutionService.getSolutionForProblem(request.getLanguage());
-                final ResponseDto responseDto = ResponseDto.builder()
+                final String cleanCode = solutionResponse.getCode()
+                        .replace("\\n", "\n");
+                return ResponseDto.builder()
                         .problemStatement(sanitizedInput)
                         .algorithms(solutionResponse.getAlgorithms())
-                        .code(solutionResponse.getCode())
+                        .code(cleanCode)
                         .intuition(solutionResponse.getIntuition())
                         .timeComplexity(solutionResponse.getTimeComplexity())
                         .dataStructures(solutionResponse.getDataStructures())
                         .build();
-                return mapper.writeValueAsString(responseDto);
             } catch (Exception e) {
                 //TODO : create error response object
                 System.out.println("Error occurred : " + e.getMessage());
