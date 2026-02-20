@@ -5,22 +5,26 @@ import { problemActions } from "../store/problem";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion, useAnimate } from "framer-motion";
 import { SOLUTION_STATE } from "../util/state-constants";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function ProblemConfig({ handleTrigger }) {
   const dispatch = useDispatch();
   const [scope, animate] = useAnimate();
-  const [ showHints, updateShowHints] = useState(false);
+  const [showHints, updateShowHints] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({
     problemStatement: false,
     language: false,
   });
-  const { problemStatement, language } = useSelector(
-    (state) => state.problem,
-  );
+  const { problemStatement, language } = useSelector((state) => state.problem);
+  const [captchaToken, setCaptchaToken] = useState(null);
 
   function handleSubmission(event) {
     event.preventDefault();
     const errors = [];
+    if (!captchaToken) {
+      alert("Please verify captcha");
+      return;
+    }
     const nextErrors = {
       problemStatement: false,
       language: false,
@@ -61,7 +65,10 @@ export default function ProblemConfig({ handleTrigger }) {
     }
 
     setFieldErrors({ problemStatement: false, language: false });
-    handleTrigger(showHints ? SOLUTION_STATE.SHOW_HINTS : SOLUTION_STATE.SHOW_SOLUTION);
+    handleTrigger(
+      showHints ? SOLUTION_STATE.SHOW_HINTS : SOLUTION_STATE.SHOW_SOLUTION,
+      captchaToken,
+    );
   }
 
   return (
@@ -81,7 +88,9 @@ export default function ProblemConfig({ handleTrigger }) {
           value={language}
           className="config-selector custom-scrollbar app-font"
           id="language-selector"
-          onChange={(e) => dispatch(problemActions.updateLanguage(e.target.value))}
+          onChange={(e) =>
+            dispatch(problemActions.updateLanguage(e.target.value))
+          }
           aria-invalid={fieldErrors.language}
         >
           <option value="" disabled>
@@ -100,12 +109,15 @@ export default function ProblemConfig({ handleTrigger }) {
           <input
             type="checkbox"
             checked={showHints}
-            onChange={(e) =>
-              updateShowHints(e.target.checked)
-            }
+            onChange={(e) => updateShowHints(e.target.checked)}
           />
           Show hints only
         </label>
+
+        <ReCAPTCHA
+          sitekey="6Le_c3IsAAAAAD5bgur5E1o6EIOqqiQoQQvXDz7C"
+          onChange={(token) => setCaptchaToken(token)}
+        />
 
         <motion.button
           className="app-button app-font"

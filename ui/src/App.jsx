@@ -19,11 +19,13 @@ function App() {
   const [loading, updateLoading] = useState(false);
   const [data, updateData] = useState(false);
   const dispatch = useDispatch();
+  const [token, updateToken] = useState();
 
   useEffect(() => {
     async function callHttp() {
       try {
         updateLoading(true);
+        console.log(token);
         const request = {
           problemStatement,
           language,
@@ -70,8 +72,9 @@ function App() {
     }
   }, [loading, data, showHints]);
 
-  function handleGetSolutionClick(solutionState) {
+  function handleGetSolutionClick(solutionState, captchaToken) {
     updateSolutionState(solutionState);
+    updateToken(captchaToken);
   }
 
   return (
