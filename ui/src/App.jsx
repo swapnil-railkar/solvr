@@ -27,6 +27,7 @@ function App() {
         updateLoading(true);
         console.log(token);
         const request = {
+          token,
           problemStatement,
           language,
           showHints: solutionState === SOLUTION_STATE.SHOW_HINTS,
