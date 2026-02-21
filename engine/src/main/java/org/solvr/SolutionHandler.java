@@ -28,6 +28,7 @@ public class SolutionHandler implements RequestHandler<APIGatewayProxyRequestEve
                     .withHeaders(Map.of("Content-Type", "application/json"))
                     .withBody(responseJSON);
         } catch (Exception e) {
+            System.out.println("Error occurred : " + e.getMessage());
             return new APIGatewayProxyResponseEvent()
                     .withStatusCode(500)
                     .withHeaders(Map.of("Content-Type", "application/json"))
