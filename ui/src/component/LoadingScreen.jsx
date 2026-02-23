@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 export default function LoadingScreen() {
   return (
     <motion.div
-      className="loading-overlay"
+      className="loading-overlay loading-border"
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}

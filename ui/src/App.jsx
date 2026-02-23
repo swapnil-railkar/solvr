@@ -4,41 +4,41 @@ import GreetingPage from "./component/GreetingPage";
 import Hints from "./component/Hints";
 import ProblemConfig from "./component/ProblemConfig";
 import LoadingScreen from "./component/LoadingScreen";
-import { SOLUTION_STATE } from "./util/state-constants";
+import ErrorScreen from "./component/ErrorScreen";
 import Solution from "./component/Solution";
 import { useDispatch, useSelector } from "react-redux";
 import { getResults } from "./util/http";
 import { solutionActions } from "./store/solution";
 
 function App() {
-  const [solutionState, updateSolutionState] = useState();
+  const [getSolution, updateGetSolutionState] = useState(false);
   const answerSectionRef = useRef(null);
-  const { problemStatement, language } = useSelector((state) => state.problem);
-  const [showHints, updateShowHints] = useState(false);
-
+  const { showHints, problemStatement, language } = useSelector(
+    (state) => state.problem,
+  );
   const [loading, updateLoading] = useState(false);
   const [data, updateData] = useState(false);
+  const [error, updateError] = useState(false);
   const dispatch = useDispatch();
   const [token, updateToken] = useState();
+  const captchaRef = useRef(null);
 
   useEffect(() => {
     async function callHttp() {
       try {
         updateLoading(true);
-        console.log(token);
+        updateError(false);
         const request = {
           token,
           problemStatement,
           language,
-          showHints: solutionState === SOLUTION_STATE.SHOW_HINTS,
+          showHints,
         };
         const result = await getResults(request);
         console.log(result);
         updateData(true);
-        updateLoading(false);
-        updateShowHints(solutionState === SOLUTION_STATE.SHOW_HINTS);
 
-        if (solutionState === SOLUTION_STATE.SHOW_SOLUTION) {
+        if (!showHints) {
           dispatch(
             solutionActions.updateSolution({
               intuition: result.intuition,
@@ -48,21 +48,39 @@ function App() {
               algorithms: result.algorithms,
             }),
           );
-        } else if (solutionState === SOLUTION_STATE.SHOW_HINTS) {
+        } else {
           dispatch(solutionActions.updateHints(result.hints));
         }
       } catch (error) {
         console.error(error);
+        updateError(true);
+      } finally {
         updateLoading(false);
+        captchaRef.current.reset();
+        updateToken(null);
       }
     }
 
-    if (solutionState) {
+    if (getSolution) {
+      if (!token) {
+        alert("Please verify captcha");
+        return;
+      }
       callHttp();
-      updateSolutionState(undefined);
+      updateGetSolutionState(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [solutionState]);
+  }, [getSolution, showHints]);
+
+  useEffect(() => {
+    if (!error) return undefined;
+
+    const timeoutId = setTimeout(() => {
+      updateError(false);
+    }, 3000);
+
+    return () => clearTimeout(timeoutId);
+  }, [error]);
 
   useEffect(() => {
     if (!loading && data && answerSectionRef.current) {
@@ -73,24 +91,22 @@ function App() {
     }
   }, [loading, data, showHints]);
 
-  function handleGetSolutionClick(solutionState, captchaToken) {
-    updateSolutionState(solutionState);
-    updateToken(captchaToken);
-  }
-
   return (
     <>
       <GreetingPage />
-      <ProblemConfig handleTrigger={handleGetSolutionClick} />
+      <ProblemConfig
+        updateCaptchaToken={updateToken}
+        captchaRef={captchaRef}
+        solutionClick={updateGetSolutionState}
+      />
       {!loading && data && (
         <section ref={answerSectionRef} className="app-section">
-          {showHints && (
-            <Hints handleGetSolutionClick={handleGetSolutionClick} />
-          )}
+          {showHints && <Hints solutionClick={updateGetSolutionState} />}
           {!showHints && <Solution />}
         </section>
       )}
-      {loading && <LoadingScreen />}
+      {loading && !error && <LoadingScreen />}
+      {error && <ErrorScreen onClose={() => updateError(false)} />}
     </>
   );
 }

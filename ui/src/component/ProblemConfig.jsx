@@ -4,27 +4,20 @@ import { LANGUAGES } from "../util/language-list";
 import { problemActions } from "../store/problem";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion, useAnimate } from "framer-motion";
-import { SOLUTION_STATE } from "../util/state-constants";
 import ReCAPTCHA from "react-google-recaptcha";
 
-export default function ProblemConfig({ handleTrigger }) {
+export default function ProblemConfig({ captchaRef, updateCaptchaToken, solutionClick }) {
   const dispatch = useDispatch();
   const [scope, animate] = useAnimate();
-  const [showHints, updateShowHints] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({
     problemStatement: false,
     language: false,
   });
-  const { problemStatement, language } = useSelector((state) => state.problem);
-  const [captchaToken, setCaptchaToken] = useState(null);
+  const { showHints, problemStatement, language } = useSelector((state) => state.problem);
 
   function handleSubmission(event) {
     event.preventDefault();
     const errors = [];
-    if (!captchaToken) {
-      alert("Please verify captcha");
-      return;
-    }
     const nextErrors = {
       problemStatement: false,
       language: false,
@@ -65,10 +58,7 @@ export default function ProblemConfig({ handleTrigger }) {
     }
 
     setFieldErrors({ problemStatement: false, language: false });
-    handleTrigger(
-      showHints ? SOLUTION_STATE.SHOW_HINTS : SOLUTION_STATE.SHOW_SOLUTION,
-      captchaToken,
-    );
+    solutionClick(true);
   }
 
   return (
@@ -108,15 +98,16 @@ export default function ProblemConfig({ handleTrigger }) {
         <label className="hint-toggle app-font">
           <input
             type="checkbox"
-            checked={showHints}
-            onChange={(e) => updateShowHints(e.target.checked)}
+            checked={!!showHints}
+            onChange={(e) => dispatch(problemActions.updateShowHints(e.target.checked))}
           />
           Show hints only
         </label>
 
         <ReCAPTCHA
+          ref={captchaRef}
           sitekey="6Le_c3IsAAAAAD5bgur5E1o6EIOqqiQoQQvXDz7C"
-          onChange={(token) => setCaptchaToken(token)}
+          onChange={(token) => updateCaptchaToken(token)}
         />
 
         <motion.button

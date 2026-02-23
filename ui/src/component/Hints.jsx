@@ -1,13 +1,19 @@
 import { useState } from "react";
 import TextArea from "./TextArea";
-import { SOLUTION_STATE } from "../util/state-constants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import { problemActions } from "../store/problem";
 
-export default function Hints({ handleGetSolutionClick }) {
+export default function Hints({ solutionClick }) {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const hints = useSelector((state) => state.solution.hints);
+  const dispatch = useDispatch();
+
+  function handleClick() {
+    dispatch(problemActions.updateShowHints(false));
+    solutionClick(true);
+  }
   return (
     <>
       <h2 className="app-font app-white">Hints</h2>
@@ -30,7 +36,7 @@ export default function Hints({ handleGetSolutionClick }) {
       <motion.button
         className="app-button app-font"
         type="button"
-        onClick={() => handleGetSolutionClick(SOLUTION_STATE.SHOW_SOLUTION)}
+        onClick={handleClick}
         whileHover={{ scale: 1.04 }}
         transition={{ type: "spring", stiffness: 500 }}
       >

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { SOLUTION_TABS } from "../util/state-constants";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
 import { useSelector } from "react-redux";
@@ -11,6 +10,8 @@ const slideTransition = {
   animate: { x: 0, opacity: 1 },
   exit: (direction) => ({ x: direction > 0 ? -24 : 24, opacity: 0 }),
 };
+
+const SOLUTION_TABS = ["Intuition", "Code"];
 
 export default function Solution() {
   const [selectedTabIndex, updateSelectedTabIndex] = useState(0);

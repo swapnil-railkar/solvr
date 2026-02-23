@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+    showHints: false,
     problemStatement: '',
     language: ''
 };
@@ -14,6 +15,9 @@ const problemSlice = createSlice({
         },
         updateLanguage(state, action) {
             state.language = action.payload;
+        },
+        updateShowHints(state, action) {
+            state.showHints = action.payload;
         }
     }
 });
