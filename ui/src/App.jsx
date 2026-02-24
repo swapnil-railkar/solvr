@@ -10,6 +10,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { getResults } from "./util/http";
 import { solutionActions } from "./store/solution";
 
+const screen_state = {
+  hints: "hints",
+  solution: "solution",
+};
+
 function App() {
   const [getSolution, updateGetSolutionState] = useState(false);
   const answerSectionRef = useRef(null);
@@ -22,12 +27,14 @@ function App() {
   const dispatch = useDispatch();
   const [token, updateToken] = useState();
   const captchaRef = useRef(null);
+  const [solutionScreen, updateSolutionScreen] = useState(undefined);
 
   useEffect(() => {
     async function callHttp() {
       try {
         updateLoading(true);
         updateError(false);
+        updateSolutionScreen(undefined);
         const request = {
           token,
           problemStatement,
@@ -48,8 +55,10 @@ function App() {
               algorithms: result.algorithms,
             }),
           );
+          updateSolutionScreen(screen_state.solution);
         } else {
           dispatch(solutionActions.updateHints(result.hints));
+          updateSolutionScreen(screen_state.hints);
         }
       } catch (error) {
         console.error(error);
@@ -70,7 +79,7 @@ function App() {
       updateGetSolutionState(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getSolution, showHints]);
+  }, [getSolution]);
 
   useEffect(() => {
     if (!error) return undefined;
@@ -99,10 +108,10 @@ function App() {
         captchaRef={captchaRef}
         solutionClick={updateGetSolutionState}
       />
-      {!loading && data && (
+      {!loading && data && solutionScreen && (
         <section ref={answerSectionRef} className="app-section">
-          {showHints && <Hints solutionClick={updateGetSolutionState} />}
-          {!showHints && <Solution />}
+          {solutionScreen === screen_state.hints && <Hints solutionClick={updateGetSolutionState} />}
+          {solutionScreen === screen_state.solution && <Solution />}
         </section>
       )}
       {loading && !error && <LoadingScreen />}
