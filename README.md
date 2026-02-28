@@ -4,6 +4,8 @@
 
 SolvR helps developers think through coding problems by providing either progressive hints or complete solutions in a selected programming language. It is designed as a learning-first tool rather than a simple answer generator.
 
+Try it yourself : http://solvr-280226.s3-website.ap-south-1.amazonaws.com/
+
 ---
 
 ## ✨ Features
