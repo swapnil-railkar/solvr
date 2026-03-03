@@ -138,7 +138,7 @@ CAPTCHA effectively prevents automated abuse while maintaining minimal friction 
 
 ## 💡 Motivation
 
-Arcana was built to explore:
+SolvR was built to explore:
 
 - Prompt engineering strategies
 - Serverless architecture design
